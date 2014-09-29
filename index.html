@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>ColorBlocks&mdash;CS 679 Project 2</title>
+	<meta name="description" content="">
+	<link rel="stylesheet" href="_/css/main.css">
+</head>
+
+<body>
+	<!-- Important Stuff -->
+	<!-- <canvas id="myCanvas" width="800" height="600">
+	    Canvas Fallback Content
+	</canvas> -->
+	
+	<!-- Libraries -->
+	<script src="_/js/sylvester.js" type="text/javascript" charset="utf-8"></script>
+	<script src="_/js/Three.js" type="text/javascript" charset="utf-8"></script>
+	<script src="_/js/RequestAnimationFrame.js" type="text/javascript" charset="utf-8"></script>
+	<!-- jQuery-Related Libraries -->
+	<script src="_/js/jquery-1.6.4.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="_/js/jquery.hotkeys.js" type="text/javascript" charset="utf-8"></script>
+	<script src="_/js/jquery.mousewheel.js" type="text/javascript" charset="utf-8"></script>
+	<!-- Our Classes -->
+	<script src="_/js/app.js" type="text/javascript" charset="utf-8"></script>
+	<script src="_/js/LightBeam.js" type="text/javascript" charset="utf-8"></script>
+	<script src="_/js/CapsuleGeometry.js" type="text/javascript" charset="UTF-8"></script>
+	<script src="_/js/SpotGeometry.js" type="text/javascript" charset="UTF-8"></script>
+	<script src="_/js/SpotLight.js" type="text/javascript" charset="UTF-8"></script>
+	<script src="_/js/CustomCube.js" type="text/javascript" charset="UTF-8"></script>
+	<script src="_/js/Exit.js" type="text/javascript" charset="UTF-8"></script>
+	<script src="_/js/Player.js" type="text/javascript" charset="UTF-8"></script>
+	<!-- Levels -->
+	<script src="_/js/Level.js" type="text/javascript" charset="UTF-8"></script>
+	<script src="_/js/Levels.js" type="text/javascript" charset="UTF-8"></script>
+	
+	<!-- Message Box -->
+	<script src="_/js/MessageBox.js" type="text/javascript" charset="UTF-8"></script>
+	
+	<!-- All Shaders -->
+	<!-- Custom Shaders -->
+	
+	<!-- Shaders done by Sam -->
+	<script id="samsFragmentShader" type="x-shader/x-fragment">
+	
+	
+			//this is my shader that makes geometries look as if they are clouds! :) 
+			uniform float time;
+			uniform vec2 resolution;
+
+			uniform float fogDensity;
+			uniform vec3 fogColor;
+
+			uniform sampler2D texture1;
+			uniform sampler2D texture2;
+
+			varying vec2 vUv;
+
+			void main( void ) {
+
+				vec2 position = -1.0 + 2.0 * vUv;
+
+				vec4 random = texture2D( texture1, vUv );
+				vec2 textureOne = vUv + vec2( 1.51,-1.21) * time * 0.02;
+
+				textureOne.x += random.x * 2.0;
+				textureOne.y += random.y * 2.0;
+
+
+				float p = texture2D( texture1, textureOne * 1.5 * cos(time)).a;
+				vec4 color = texture2D( texture1, textureOne * .035 );
+				vec4 temp = color * ( vec4( p, p, p, p ) * 2.0 ) + ( color * color - 0.1 );
+
+				gl_FragColor = temp;
+			}
+	</script>
+	
+	<script id="samsVertexShader" type="x-shader/x-vertex">
+
+			uniform vec2 uvScale;
+			varying vec2 vUv;
+
+			void main()
+			{
+
+				vUv = uvScale * uv;
+				vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+				gl_Position = projectionMatrix * mvPosition;
+
+			}
+
+	</script>
+	
+	<script id="dansVertexShader" type="text/x-glsl-vert">
+		varying vec2 vUv;
+
+		void main()
+		{
+			vUv = uv;
+			vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+			gl_Position = projectionMatrix * mvPosition;
+		}
+	</script>
+	<script id="dansRedFragmentShader" type="text/x-glsl-frag">
+		uniform float time;
+		uniform vec2 resolution;
+
+		varying vec2 vUv;
+
+		void main( void ) {
+
+			vec2 position = -1.0 + 2.0 * vUv;
+
+			float red = abs( sin( position.x * position.y + time / 1.0 ) );
+			float green = abs( sin( position.x * position.y + time / 5.0 ) );
+			float blue = abs( sin( position.x * position.y + time / 5.0 ) );
+			gl_FragColor = vec4( red, green, blue, 1.0 );
+
+		}
+	</script>
+	<script id="dansGreenFragmentShader" type="text/x-glsl-frag">
+		uniform float time;
+		uniform vec2 resolution;
+
+		varying vec2 vUv;
+
+		void main( void ) {
+
+			vec2 position = -1.0 + 2.0 * vUv;
+
+			float red = abs( sin( position.x * position.y + time / 5.0 ) );
+			float green = abs( sin( position.x * position.y + time / 1.0 ) );
+			float blue = abs( sin( position.x * position.y + time / 5.0 ) );
+			gl_FragColor = vec4( red, green, blue, 1.0 );
+
+		}
+	</script>
+	<script id="dansBlueFragmentShader" type="text/x-glsl-frag">
+		uniform float time;
+		uniform vec2 resolution;
+
+		varying vec2 vUv;
+
+		void main( void ) {
+
+			vec2 position = -1.0 + 2.0 * vUv;
+
+			float red = abs( sin( position.x * position.y + time / 5.0 ) );
+			float green = abs( sin( position.x * position.y + time / 5.0 ) );
+			float blue = abs( sin( position.x * position.y + time / 1.0 ) );
+			gl_FragColor = vec4( red, green, blue, 1.0 );
+
+		}
+	</script>
+	
+	<div class="bigButtons">
+		<a id="hintButton">Level Hint</a>
+		<a id="welcomeButton">Main Menu</a>
+	</div>
+	
+	<div class="message">
+			<h1>Something bad happened.</h1>
+			<div class="messageContentWrapper">
+				<div class="messageContent">
+					<p>If you&apos;re reading this, either some JavaScript file did something bad, your browser doesn&apos;t support WebGL, or JavaScript is disabled.</p>
+					<p>Uhm, try reloading. Sorry about that.</p>
+				</div>
+			</div>
+			<div class="messageButtons">
+				<span class="customButtons"></span>
+				<a class="okayButton">Sadface.</a>
+			</div>
+		</div>
+</body>
+</html>

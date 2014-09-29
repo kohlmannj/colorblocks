@@ -1,0 +1,152 @@
+/*- self-clearing floats ----------*/
+
+.mod:after {
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+}
+
+body {
+	/* Prevents elastic scrolling on Mac OS X Lion */
+	overflow: hidden;
+	background: url("../images/background3.jpg") no-repeat center top;
+	font: 16px / 18px "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+#renderCanvas {
+	position: fixed;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	margin: auto;
+	border: 1px solid #333;
+	background: rgba(0,0,0,0.35);
+	box-shadow: 0 0 8px #000;
+}
+
+.message {
+	position: fixed;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	margin: auto;
+	width: 600px;
+	height: 301px;
+	background: rgba(64,64,64,0.85);
+	border-radius: 8px;
+	font-size: 18px;
+	text-align: center;
+	color: #fff;
+	text-shadow: 0 -1px 1px #333;
+	padding: 8px 32px;
+	box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+	border: 1px solid #ccc;
+	z-index: 9999;
+}
+
+.message a {
+	color: #fff;
+}
+
+.message h1, .message dt {
+	font-size: 24px;
+	line-height: 32px;
+	font-weight: 300;
+}
+
+.message dd {
+	line-height: 32px;
+}
+
+.message h1, .message p {
+	margin-bottom: 8px;
+}
+
+.messageContentWrapper {
+	font-size: 16px;
+	text-align: left;
+	margin: 0 -32px;
+	height: 219px;
+	overflow: auto;
+	border-top: 1px solid rgba(255,255,255,0.35);
+	border-bottom: 1px solid rgba(255,255,255,0.35);
+	box-shadow: 0 1px 1px #111 inset;
+	background: rgba(0,0,0,0.35);
+	text-shadow: 0 -1px 0 #333;
+}
+
+.messageContent {
+	padding: 12px;
+	text-align: center;
+}
+
+.messageButtons a, .bigButtons a {
+	display: inline-block;
+	min-width: 64px;
+	font-weight: bold;
+	line-height: 18px;
+	height: 18px;
+	font-size: 14px;
+	border: 1px solid #ccc;
+	box-shadow: 0 1px 1px rgba(0,0,0,0.35) inset;
+	background: #666;
+	text-shadow: 0 -1px 0 #333;
+	text-decoration: none;
+	color: #fff;
+	padding: 2px 8px;
+	margin: 0 4px;
+	border-radius: 4px;
+}
+
+.bigButtons {
+	position: absolute;
+	bottom: 20px;
+	left: 0;
+	right: 0;
+	margin: auto;
+	text-align: center;
+}
+
+.bigButtons a {
+/*	width: 256px;*/
+	min-width: 128px;
+	height: 36px;
+	line-height: 36px;
+	text-align: center;
+	font-size: 28px;
+	font-weight: 300;
+	border: 2px solid #333;
+	box-shadow: 0 1px 1px rgba(255,255,255,0.35) inset;
+	text-shadow: 0 2px 1px #333;
+	border-radius: 8px;
+	padding: 4px 16px;
+}
+
+.messageButtons a:active, .bigButtons a:active {
+	background: #444;
+}
+
+.messageButtons {
+	margin-top: 12px;
+	height: 24px;
+}
+
+.message a.okayButton {
+	background: #285cff;
+	text-shadow: 0 -1px 0 #032bc0;
+	position: absolute;
+	right: 8px;
+}
+
+.message a.okayButton:active {
+	background: #032bc0;
+}
+
+.message .customButtons {
+	position: absolute;
+	left: 8px;
+}
